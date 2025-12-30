@@ -21,7 +21,7 @@ def preprocess_data(
     target_column: str = "default payment next month"
 ):
     # Load dataset
-    df = pd.read_excel(input_path)
+    df = pd.read_excel(input_path, header=1)
 
     # Drop duplicates
     df = df.drop_duplicates()
