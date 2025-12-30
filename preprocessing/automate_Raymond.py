@@ -21,7 +21,7 @@ def preprocess_data(
     target_column: str = "default"
 ):
     # Load dataset
-    df = pd.read_csv(input_path)
+    df = pd.read_excel(input_path)
 
     # Drop duplicates
     df = df.drop_duplicates()
@@ -76,6 +76,6 @@ def preprocess_data(
 
 if __name__ == "__main__":
     preprocess_data(
-        input_path="dataset_raw/credit_default.csv",
+        input_path="dataset_raw/default of credit card clients.xls",
         output_dir="preprocessing/dataset_preprocessed"
     )
