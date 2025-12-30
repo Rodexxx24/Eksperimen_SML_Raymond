@@ -18,7 +18,7 @@ from sklearn.impute import SimpleImputer
 def preprocess_data(
     input_path: str,
     output_dir: str,
-    target_column: str = "default"
+    target_column: str = "default payment next month"
 ):
     # Load dataset
     df = pd.read_excel(input_path)
