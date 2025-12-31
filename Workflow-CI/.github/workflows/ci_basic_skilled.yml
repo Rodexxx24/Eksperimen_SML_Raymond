@@ -1,0 +1,27 @@
+name: CI Basic & Skilled
+
+on:
+  push:
+    paths:
+      - 'MLProject/modelling.py'
+      - 'MLProject/dataset_preprocessing/**'
+
+jobs:
+  train_basic_skilled:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-update-conda: true
+          python-version: 3.11
+          activate-environment: mlflow-env
+          environment-file: MLProject/conda.yml
+
+      - name: Run modelling.py
+        working-directory: MLProject
+        run: |
+          mlflow run . -P entry_point=modelling.py
