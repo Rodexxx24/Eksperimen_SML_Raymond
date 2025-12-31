@@ -1,0 +1,30 @@
+name: CI Advanced
+
+on:
+  push:
+    paths:
+      - 'MLProject/**'
+
+jobs:
+  advanced:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install MLflow
+        run: pip install mlflow pandas scikit-learn
+
+      - name: Run MLflow Project
+        run: mlflow run MLProject
+
+      - name: Build Docker Image
+        run: mlflow build-docker MLProject -n logreg-mlflow
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker Image
+        run: |
+          docker tag logreg-mlflow ${{ secrets.DOCKER_USERNAME }}/logreg-mlflow:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/logreg-mlflow:latest
