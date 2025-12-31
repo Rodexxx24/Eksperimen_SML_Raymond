@@ -9,6 +9,7 @@ on:
 jobs:
   train_advanced:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -20,6 +21,12 @@ jobs:
           python-version: 3.11
           activate-environment: mlflow-env
           environment-file: MLProject/conda.yml
+          cache: true
+
+      - name: Install extra pip packages (optional)
+        run: |
+          pip install --upgrade pip
+          pip install mlflow matplotlib
 
       - name: Set DagsHub environment variables
         run: |
@@ -29,4 +36,12 @@ jobs:
       - name: Run modelling_tuning.py
         working-directory: MLProject
         run: |
+          echo "[INFO] Running modelling_tuning.py for Advanced CI"
           python modelling_tuning.py
+
+      - name: Upload MLflow local artefacts (optional)
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: mlflow-artifacts
+          path: MLProject/mlruns
